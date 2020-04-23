@@ -3,31 +3,40 @@
 
 #placeHolder{
   padding: 15px;
-   vertical-align: middle; 
-  }
- 
-#title{
-  text-align: center;
-   background-color: royalblue;
-    color: white;
-     margin: 0;
-  }
-#summary{
-  border-radius: 3px 3px 3px 3px;
-   padding: 7px 2px;
+  vertical-align: middle; 
+   margin: 0;
+}
+
+
+#article{
+  border: 2px solid royalblue ;
+  border-radius:  0px 0px 25px 25px;
+  height: 100%;
   
 }
- #image{
+
+#title{
+  text-align: center;
+  background-color: royalblue;
+  color: white;
+  margin: 0;
+}
+#summary{
+ padding: 7px 2px;
+ font-size: 20px;
+  
+}
+#image{
   display:block;
   margin-right:auto;
   margin-left: auto;
+  padding: 40px;
  }
 
- figure{
-   border:2px solid royalblue ;
+ 
    
-   margin: 0;
- }
+   
+ 
 
 footer{
    text-align: center;

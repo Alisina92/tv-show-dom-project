@@ -11,26 +11,27 @@ function makePageForEpisodes(episodeList) {
     let theContainer = document.createElement('div');
     theContainer.id = 'placeHolder';
     theContainer.setAttribute('class','xl-col-4');
-     
     rootElem.appendChild(theContainer);
-    let theTitleTagName = document.createElement('h2');
-    theContainer.appendChild(theTitleTagName)
+    
+    let theArticle = document.createElement('article');
+    theArticle.id='article';
+    theContainer.appendChild(theArticle);
+    let theTitleTagName = document.createElement('h3');
+    theArticle.appendChild(theTitleTagName);
     theTitleTagName.textContent = `${element.name}-S0${element.season}E${element.number < 10 ? '0' + element.number : element.number}`;
     theTitleTagName.id = 'title';
-    let theFigure = document.createElement('figure');
-     theContainer.appendChild(theFigure);
     let theImageTagName = document.createElement('img');
-    theFigure.appendChild(theImageTagName);
+    theArticle.appendChild(theImageTagName);
     theImageTagName.id = 'image';
     theImageTagName.src = element.image.medium;
-    let theFigCaption = document.createElement('figcaption');
-    theFigCaption.textContent = element.summary.replace(/(<([^>]+)>)/ig,'');
-    theFigCaption.id ='summary';
-    theFigure.appendChild(theFigCaption);
+    let theParagraph = document.createElement('p');
+    theParagraph.textContent = element.summary.replace(/(<([^>]+)>)/ig,'');
+    theParagraph.id ='summary';
+     theArticle.appendChild(theParagraph);
   });  
   let theFooter = document.createElement('footer');
    document.body.appendChild(theFooter);
-  theFooter.textContent = 'TVmaze is properly credited'
+  theFooter.textContent = 'TVmaze is properly credited';
   }
 
 
