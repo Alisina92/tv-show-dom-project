@@ -7,6 +7,7 @@ function setup() {
 }
 function makePageForEpisodes(episodeList) {
   const rootElem = document.getElementById("root");
+  rootElem.textContent= `The total ${matchedEpisodesList} /${episodeList.length}`;
   let theForm = document.createElement('form');
    theForm.id='search-box';
    rootElem.appendChild(theForm);
@@ -14,7 +15,7 @@ function makePageForEpisodes(episodeList) {
    theInput.id ='userInput';
    theInput.type='text'; 
    theInput.onkeyup = function(){search()};
-  
+   
    theInput.placeholder='Search a film...';
    theForm.appendChild(theInput);
    
@@ -24,9 +25,9 @@ function makePageForEpisodes(episodeList) {
      theContainer.id = 'placeHolder';
      theContainer.setAttribute('class','xl-col-4');
      rootElem.appendChild(theContainer);
-     
      let theArticle = document.createElement('article');
-     theArticle.id='article';
+     theArticle.id='article'; 
+     theArticle.setAttribute('class','artContainer')
      theContainer.appendChild(theArticle);
      let theTitleTagName = document.createElement('h3');
      theArticle.appendChild(theTitleTagName);
@@ -43,19 +44,21 @@ function makePageForEpisodes(episodeList) {
     });  
     
     function search(){
-       
-      let input = document.getElementById('userInput');
-       let filterTitle = input.value.toUpperCase(); 
-      let theFilmTitle = document.getElementsByTagName('h3');
-       for(let i = 0; i<theFilmTitle.length ;i++){
-           let textValue = theFilmTitle[i].textContent|| theFilmTitle[i].innerText;
-           if(textValue.toUpperCase().indexOf(filterTitle)>-1){
-             theFilmTitle[i].style.display = 'block';
-              }else{
-             theFilmTitle[i].style.display = 'none';
-              }
-            }
       
+      
+      let input = document.getElementById('userInput');
+      let filterTitle = input.value.toUpperCase();
+      let theFilmTitle = document.getElementsByTagName('h3');
+      for (let i = 0; i < theFilmTitle.length; i++) {
+        let textValue = theFilmTitle[i].textContent || theFilmTitle[i].innerText;
+        if (textValue.toUpperCase().indexOf(filterTitle) > -1) {
+          theFilmTitle[i].style.display = 'block';
+        } else {
+          theFilmTitle[i].style.display = 'none';
+        }
+          
+      }
+
       let filterSummary = input.value.toUpperCase();
       let theSummary = document.getElementsByTagName('p');
       for (let j = 0; j < theFilmTitle.length; j++) {
@@ -65,8 +68,16 @@ function makePageForEpisodes(episodeList) {
         } else {
           theSummary[j].style.display = 'none';
         }
-        }
-        }
+      }
+    }
+            function matchedEpisodesList(){
+               let matchedEpisodes= 0;
+              if (theFilmTitle.style.display === 'block' && theSummary.style.display === 'block' ){
+                  return matchedEpisodes++;
+                }else{
+                  return matchedEpisodes;
+                }
+              }
     
     
     
