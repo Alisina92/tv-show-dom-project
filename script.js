@@ -7,34 +7,77 @@ function setup() {
 }
 function makePageForEpisodes(episodeList) {
   const rootElem = document.getElementById("root");
-  episodeList.forEach(element => {
-    let theContainer = document.createElement('div');
-    theContainer.id = 'placeHolder';
-    theContainer.setAttribute('class','xl-col-4');
-    rootElem.appendChild(theContainer);
-    
-    let theArticle = document.createElement('article');
-    theArticle.id='article';
-    theContainer.appendChild(theArticle);
-    let theTitleTagName = document.createElement('h3');
-    theArticle.appendChild(theTitleTagName);
-    theTitleTagName.textContent = `${element.name}-S0${element.season}E${element.number < 10 ? '0' + element.number : element.number}`;
-    theTitleTagName.id = 'title';
-    let theImageTagName = document.createElement('img');
-    theArticle.appendChild(theImageTagName);
-    theImageTagName.id = 'image';
-    theImageTagName.src = element.image.medium;
-    let theParagraph = document.createElement('p');
-    theParagraph.textContent = element.summary.replace(/(<([^>]+)>)/ig,'');
-    theParagraph.id ='summary';
+  let theForm = document.createElement('form');
+   theForm.id='search-box';
+   rootElem.appendChild(theForm);
+   let theInput=document.createElement('input');
+   theInput.id ='userInput';
+   theInput.type='text'; 
+   theInput.onkeyup = function(){search()};
+  
+   theInput.placeholder='Search a film...';
+   theForm.appendChild(theInput);
+   
+   
+   episodeList.forEach(element => {
+     let theContainer = document.createElement('div');
+     theContainer.id = 'placeHolder';
+     theContainer.setAttribute('class','xl-col-4');
+     rootElem.appendChild(theContainer);
+     
+     let theArticle = document.createElement('article');
+     theArticle.id='article';
+     theContainer.appendChild(theArticle);
+     let theTitleTagName = document.createElement('h3');
+     theArticle.appendChild(theTitleTagName);
+     theTitleTagName.textContent = `${element.name}-S0${element.season}E${element.number < 10 ? '0' + element.number : element.number}`;
+     theTitleTagName.id = 'title';
+     let theImageTagName = document.createElement('img');
+     theArticle.appendChild(theImageTagName);
+     theImageTagName.id = 'image';
+     theImageTagName.src = element.image.medium;
+     let theParagraph = document.createElement('p');
+     theParagraph.textContent = element.summary.replace(/(<([^>]+)>)/ig,'');
+     theParagraph.id ='summary';
      theArticle.appendChild(theParagraph);
-  });  
-  let theFooter = document.createElement('footer');
-   document.body.appendChild(theFooter);
-  theFooter.textContent = 'TVmaze is properly credited';
+    });  
+    
+    function search(){
+       
+      let input = document.getElementById('userInput');
+       let filterTitle = input.value.toUpperCase(); 
+      let theFilmTitle = document.getElementsByTagName('h3');
+       for(let i = 0; i<theFilmTitle.length ;i++){
+           let textValue = theFilmTitle[i].textContent|| theFilmTitle[i].innerText;
+           if(textValue.toUpperCase().indexOf(filterTitle)>-1){
+             theFilmTitle[i].style.display = 'block';
+              }else{
+             theFilmTitle[i].style.display = 'none';
+              }
+            }
+      
+      let filterSummary = input.value.toUpperCase();
+      let theSummary = document.getElementsByTagName('p');
+      for (let j = 0; j < theFilmTitle.length; j++) {
+        let textValue = theSummary[j].textContent || theSummary[j].innerText;
+        if (textValue.toUpperCase().indexOf(filterSummary) > -1) {
+          theSummary[j].style.display = 'block';
+        } else {
+          theSummary[j].style.display = 'none';
+        }
+        }
+        }
+    
+    
+    
+    
+    
+    let theFooter = document.createElement('footer');
+    document.body.appendChild(theFooter);
+    theFooter.textContent = 'TVmaze is properly credited';
   }
-
-
+  
+  
 window.onload = setup;
 
 
