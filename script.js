@@ -2,14 +2,19 @@
 
 /*fetches the the data from the Maze Api*/
 const rootElem = document.getElementById("root"); // parent of All my elements
-let allEpisodes = getAllEpisodes();
+let allEpisodes;
+fetch('https://api.tvmaze.com/shows/527/episodes')
+.then(response=>response.json())
+.then(episode=>{
+   allEpisodes =episode;
+})
 
-//let displayResult;
+let displayResult;
 
 
 /* setup function will call all the functions that makes the different part of the page */
 function setup() {
-  let displayResult = `The total is: 0 /${allEpisodes.length}`; // display the number of episodes.
+   displayResult = `The total is: 0 /${allEpisodes.length}`; // display the number of episodes.
     createHeader(displayResult); // Calls a function that creates the header section.
     dropDownList(); //Calls a drop list function.
     makePageForEpisodes(allEpisodes); //calls make page for episode function.
@@ -87,54 +92,57 @@ function titleMaker(season, number) {
 /*This function will search the input and takes input as a parameter */ 
 
 function search(input) { 
-   let searchResult = allEpisodes.filter((episode) => { // this function will filter all episode array of objects take one episode object as an element.
+   let searchResult = allEpisodes.filter((episode) => { // This function will filter all episode array of objects take one episode object as an element.
     return (
-      episode.name.toLowerCase().includes(input.toLowerCase()) || 
-      episode.summary.toUpperCase().includes(input.toUpperCase())
+      episode.name.toLowerCase().includes(input.toLowerCase()) ||//Compares object property of name that is lowercase is === to the input that the user enters if not converts it to the lowercase.
+      episode.summary.toUpperCase().includes(input.toUpperCase())//Compares object property of summary that is Uppercase is === to the input that the user enters if not converts it to the Uppercase.
     );
   });
-  let theTitle = document.getElementById("numberOfMatchingTitle");
-  theTitle.textContent = `The total is: ${searchResult.length}/${allEpisodes.length}`;
+  let theTitle = document.getElementById("numberOfMatchingTitle");// Targeted the title in the setup function using get element by Id method.
+  theTitle.textContent = `The total is: ${searchResult.length}/${allEpisodes.length}`;//The searchResult.length displays number of episodes matched to userInput
   
-  makePageForEpisodes(searchResult);
+  makePageForEpisodes(searchResult);//Call our makePage for episode to loop though the search result this time.
     
 }
 
-function dropDownList() {
-  let dropDownList = document.createElement("select");
-  let getTheFormId = document.getElementById("search-box");
-  getTheFormId.appendChild(dropDownList);
+/*This function will Creates a dropdown-list*/
 
-  let allOption = document.createElement("option");
-  allOption.textContent = "select All Episodes";
-  dropDownList.appendChild(allOption);
-  allEpisodes.forEach((episode) => {
-    let option = document.createElement("option");
+function dropDownList() {
+  let dropDownList = document.createElement("select");//Creates a select element. 
+  let getTheFormId = document.getElementById("search-box");//Gets a form element.
+  getTheFormId.appendChild(dropDownList);//Appended the drop down list to the form.
+
+  let allOption = document.createElement("option");//Created single option to go back to all episodes.
+  allOption.textContent = "select All Episodes";//Set the text content to 'select all episodes'
+  dropDownList.appendChild(allOption);//Appended the all option to the drop-down list.
+  allEpisodes.forEach((episode) => {//loops go though all episodes.
+    let option = document.createElement("option");//as it loops creates option.
     option.textContent = `${episode.name}-${titleMaker(
       episode.number,
       episode.season
-    )}`;
-    dropDownList.appendChild(option);
+    )}`;//Assigned the text content to episodes name and calls the function title maker that takes episodes number and season number as parameter to fix
+    dropDownList.appendChild(option);// appended the option to the drop list.
   });
 
 
-  dropDownList.addEventListener("change", (event) => {
-    let theListValue = event.target.value;
-    if (theListValue === allOption.textContent) {
-      makePageForEpisodes(allEpisodes);
+  dropDownList.addEventListener("change", (event) => { // Event listener to display the result based on selected drop down list.
+    let theListValue = event.target.value;// targets the list value options
+    if (theListValue === allOption.textContent) { // if the list value be equal to select all episodes return all episode list
+      makePageForEpisodes(allEpisodes);// calls the function that creates loops though all episodes and display it.
     } else {
-      const searchResult = allEpisodes.filter((episode) => {
-        return theListValue.toLowerCase().includes(episode.name.toLowerCase());
+      const searchResult = allEpisodes.filter((episode) => { // filtered all episodes array to retrieve a episode.
+        return theListValue.toLowerCase().includes(episode.name.toLowerCase());//returns the list value  that includes episode name lower case
       });
-      makePageForEpisodes(searchResult);
+      makePageForEpisodes(searchResult); //calls the loop that displays the search filtered based on the selected option 
     }
   });
 }
+/*This is a footer function*/
 
 function createFooter() {
-  let theFooter = document.createElement("footer");
-  document.body.appendChild(theFooter);
-  theFooter.textContent = "TVmaze is properly credited";
+  let theFooter = document.createElement("footer");// Creates a footer element
+  document.body.appendChild(theFooter);// append the footer to the body element
+  theFooter.textContent = "TVmaze is properly credited";// set the text content of the footer to maze tv
 }
 
 window.onload = setup;
