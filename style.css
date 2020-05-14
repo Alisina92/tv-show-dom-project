@@ -7,7 +7,7 @@ body{
    color: red;
 
 }
-#placeHolder{
+.placeHolder{
   padding: 15px;
   vertical-align: middle; 
    margin: 0;

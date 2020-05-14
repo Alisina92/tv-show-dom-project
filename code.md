@@ -78,3 +78,51 @@
     
     //console.log('test 44 ' + allEpisodes)
   //}).catch(err => console.log(err));*/
+
+
+
+  level 400
+
+  const searchResult = allEpisodes.filter((episode) => {
+        // filtered all episodes array to retrieve a episode.
+             console.log(episode)
+        return theListValue.toLowerCase().includes(episode.name.toLowerCase()); //returns the list value  that includes episode name lower case
+
+        let theOptionValue = event.target.value;
+               console.log(theOptionValue)
+          console.log(theOptionValue.toLowerCase());
+          console.log(element.url.toLowerCase());
+
+          console.log(
+            element.url.toLowerCase().includes(theOptionValue.toLowerCase())
+          );
+          if (
+            theOptionValue.toLowerCase().includes(element.url.toLowerCase())
+          ) {
+          }
+
+
+
+
+              function fetchEpisodes(showId){
+      fetch(`https://api.tvmaze.com/shows/${showId}/episodes`)// fetches the episodes embeds the id
+            .then((response) =>{ 
+               return response.json;
+            });
+    }
+
+    // fetch(`https://api.tvmaze.com/shows/${element.id}/episodes`)// fetches the episodes embeds the id
+//   .then((response) => response.json())// converts the data into json
+//   //.then((theData) => {// gets the data
+//     ; // assigns the data to the result
+//     //console.log(theResult)
+
+//     //getTheValue.addEventListener("change", (event) => {// if the value  change
+//       //makePageForEpisodes(theData); // makes episode page page with result
+//     });
+//   })
+//   .catch((err) => console.log(err));// gets the error if any
+
+// })
+
+//}
