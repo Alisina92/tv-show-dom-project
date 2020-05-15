@@ -18,9 +18,7 @@ function setup() {
   createDrdShows(); //Calls a drop list function.
   displayEpisodeList();
   makePageForShows(allShows);
-  //makePageForEpisodes(allShows); //calls make page for episode function.
   createFooter(); // calls create footer function.
- 
 }
 /*2 creates header*/
 
@@ -50,7 +48,7 @@ function makePageForShows(showData) {
   rootElem.textContent = ""; // Set the of the root to blank as my the root content is the parent of my elements
 
   showData.forEach((e) => {
-    //   // Loops through the episode list
+    // Loops through the episode list
     setShowHTML(e); // repeats set episode function to create the structure of the page.
   });
 }
@@ -88,35 +86,33 @@ function setShowHTML(show) {
   theArticle.appendChild(theParagraph); // Appended the paragraph to the article
 }
 
-
 /* This function renders All The content of the page */
 function makePageForEpisodes(showId) {
-  
   rootElem.textContent = ""; // Set the of the root to blank as my the root content is the parent of my elements
-   
-  if(showId != 0){
-    fetchEpisodesAsync(showId).then(episodesData=>{
-       
-      //console.log(episodesData)
-       episodeDropList(episodesData);
-      episodesData.forEach (e=>{
-          
-          setEpisodesHTML(e);
-         
-        })
+
+  if (showId != 0) {
+    /*This will calls the Async function gives it show id parameter*/
+    fetchEpisodesAsync(showId).then((episodesData) => {
+      // receives a episodesData
+
+      episodeDropList(episodesData, showId); //  calls episode drop list function Passes episodesData and showId
+      episodesData.forEach((e) => {
+        // loops through the episodes data
+
+        //calls the function that creates html for episodes
+        setEpisodesHTML(e);
+      });
     });
-    
-  }else{
-    makePageForShows(allShows);
+  } else {
+    makePageForShows(allShows); // displays all the shows.
   }
- }
- 
-    
-    /*This function will create the basic structure of one episode Title image and description that takes element as an argument*/
-    
-    /*4th creates episode content */
-    function setEpisodesHTML(element) {
-     //console.log(element);
+}
+
+/*This function will create the basic structure of one episode Title image and description that takes element as an argument*/
+
+/*4th creates episode content */
+function setEpisodesHTML(element) {
+  //console.log(element);
   //Elements are the object inside of the array.
   let theContainer = document.createElement("div"); //Creates an div element assign it assign it to the container element.
   theContainer.setAttribute("value", "");
@@ -180,21 +176,20 @@ const drdShows = document.createElement("select");
 
 function drdEventShows() {
   drdShows.addEventListener("change", (event) => {
-    
     makePageForEpisodes(drdShows.value);
   });
 }
 
-function episodeDropList(episodes) {
-     
-  let ifElementExsicts = document.getElementById("episSelect");
-     if(ifElementExsicts){
-       ifElementExsicts.parentElement.removeChild(ifElementExsicts) 
-     }
+function episodeDropList(episodes, showId) {
+  /* if episode list exists  removes the new episode list*/
+  let ifElementExists = document.getElementById("episSelect");
+  if (ifElementExists) {
+    ifElementExists.parentElement.removeChild(ifElementExists);
+  }
   let dropDownList = document.createElement("select"); //Creates a select element.
   let getTheFormId = document.getElementById("search-box"); //Gets a form element.
   getTheFormId.appendChild(dropDownList); //Appended the drop down list to the form.
-   dropDownList.id='episSelect';
+  dropDownList.id = "episSelect";
   let allOption = document.createElement("option"); //Created single option to go back to all episodes.
   allOption.textContent = "select All Episodes"; //Set the text content to 'select all episodes'
   dropDownList.appendChild(allOption); //Appended the all option to the drop-down list.
@@ -214,71 +209,57 @@ function episodeDropList(episodes) {
     let theListValue = event.target.value; // targets the list value options
     if (theListValue === allOption.textContent) {
       // if the list value be equal to select all episodes return all episode list
-      rootElem.textContent = "";
-      makePageForEpisodes(episodes); // calls the function that creates loops though all episodes and display it.
-       
+      //rootElem.textContent = "";
+      console.log(episodes, "episodes");
+      makePageForEpisodes(showId); // calls the function that creates loops though all episodes and display it.
     } else {
       let searchResult = episodes.filter((episode) => {
-             
         //console.log(searchResult)
         // filtered all episodes array to retrieve a episode.
 
         return theListValue.toLowerCase().includes(episode.name.toLowerCase()); //returns the list value  that includes episode name lower case
       });
-       rootElem.textContent='';
-      searchResult.forEach(OneEpisodes=>{
-          setEpisodesHTML(OneEpisodes)
-       })
+      rootElem.textContent = "";
+      searchResult.forEach((OneEpisodes) => {
+        setEpisodesHTML(OneEpisodes);
+      });
       //makePageForEpisodes(searchResult); //calls the loop that displays the search filtered based on the selected option
     }
   });
 }
 
 function createDrdShows() {
-  drdEventShows();
+  /*created variable that sorts all array in ascending order*/
+  let sortedArray = allShows.sort(function (a, z) {
+    if (a.name < z.name) {
+      return -1;
+    }
+    if (a.name > z.name) {
+      return 1;
+    }
+    return 0;
+  });
+
+  drdEventShows();// calls a function that make list for shows
+
   drdShows.setAttribute("class", "selectShows"); //Creates a select element.
   let getTheFormId = document.getElementById("search-box"); //Gets a form element.
   getTheFormId.appendChild(drdShows); //Appended the drop down list to the form.
-   
+
   let allOption = document.createElement("option"); //Created single option to go back to all episodes.
   allOption.setAttribute("class", "selectShow");
   allOption.textContent = "select All Shows"; //Set the text content to 'select all episodes'
-  allOption.value= '0';
+  allOption.value = "0";
   drdShows.appendChild(allOption); //Appended the all option to the drop-down list.
-  allShows.forEach((episode) => {
+
+  sortedArray.forEach((episode) => {
     //loops go though all episodes.
     let option = document.createElement("option"); //as it loops creates option.
     option.setAttribute("class", "showList");
     option.textContent = `${episode.name}`; //Assigned the text content to episodes name and calls the function title maker that takes episodes number and season number as parameter to fix
-    /*-${titleMaker(
-       episode.number,
-      episode.season
-    )}`;*/ option.value =
-      episode.id;
+    option.value = episode.id;
     drdShows.appendChild(option); // appended the option to the drop list.
   });
-
-  
-  
-  
-  // drdShows.addEventListener("change", (event) => {
-  //   // Event listener to display the result based on selected drop down list.
-  //   let theListValue = event.target.value;
-  //   //console.log(theListValue)
-  //   // targets the list value options
-  //   if (theListValue === allOption.textContent) {
-  //     // if the list value be equal to select all episodes return all episode list
-  //     makePageForEpisodes(allEpisodes); // calls the function that creates loops though all episodes and display it.
-  //   } else {
-  //     displayEpisodeList();
-  //     const searchResult = allEpisodes.filter((episode) => {
-  //       // filtered all episodes array to retrieve a episode.
-  //       return theListValue.toLowerCase().includes(episode.name.toLowerCase()); //returns the list value  that includes episode name lower case
-  //     });
-
-  //     makePageForEpisodes(searchResult); //calls the loop that displays the search filtered based on the selected option
-  //   }
-  // });
 }
 //display episode level
 
@@ -286,7 +267,7 @@ function displayEpisodeList() {
   /* ToDo fetch all episodes for the selected show  */
 
   let theSelect = document.querySelectorAll(".selectShows"); // gets the selectShows class
-  let theValue; // variable to store the episode title
+
   theSelect.forEach((element) => {
     // goes through the title
     theValue = element; // stores the title in the value
@@ -303,7 +284,7 @@ async function fetchEpisodesAsync(showId) {
   let response = await fetch(`https://api.tvmaze.com/shows/${showId}/episodes`); // fetches the episodes embeds the id
 
   let data = response.json();
-   
+
   return data;
 }
 
@@ -321,42 +302,3 @@ function createFooter() {
 }
 
 window.onload = setup;
-
-/* research */
-/*
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  rootElem.textContent = `Got ${JSON.stringify(episodeList,null,4)} episode(s); 
-  JSON.stringify can be used to display all the all the episods in a json list
-  function tagStriped(){
-    episodeList.forEach(summaryElement=>{
-      let pTag = summaryElement.summary;
-      console.log(removedPTag);
-      return removedPTag;
-      
-    })
-  }
-  const stripPTagFromElement = summaryElement => {
-    let pTag = summaryElement.summary;
-    let removedPTag = pTag.replace(/(<([^>]+)>)/ig,'');
-    return removedPTag;
-  }
-  
-  function tagStriped() {
-    episodeList.forEach(stripPTagFromElement)
-  }
-  
-  */
