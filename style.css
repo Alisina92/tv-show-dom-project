@@ -1,3 +1,63 @@
-#root {
-  color: red;
+
+body{
+  background-color:black;
+}
+
+#numberOfMatchingTitle{
+   color: red;
+
+}
+.placeHolder{
+  padding: 15px;
+  vertical-align: middle; 
+   margin: 0;
+}
+
+#search-box{
+ height:10%; 
+ width:100%;
+ margin: 15px;
+
+}
+input{
+  height: 25px;
+  width: 12%;
+  border: 1px solid royalblue;
+  font-size:20px;
+}
+
+#article{
+  border: 2px solid royalblue ;
+  border-radius:  0px 0px 25px 25px;
+  height: 100%;
+  
+}
+
+#title{
+  text-align: center;
+  background-color: royalblue;
+  color: white;
+  margin: 0;
+}
+#summary{
+ padding: 7px 2px;
+ font-size: 20px;
+ color: white;
+  
+}
+#image{
+  display:block;
+  margin-right:auto;
+  margin-left: auto;
+  padding: 40px;
+ }
+
+ 
+   
+   
+ 
+
+footer{
+   text-align: center;
+   color: red;
 }
